@@ -18,7 +18,7 @@ import {
     async canActivate(context: ExecutionContext): Promise<boolean> {
       const gqlCtx = context.getArgByIndex(2);
       const request: Request = gqlCtx.req;
-      const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxvbmdsZTE1Iiwic3ViIjo2LCJpYXQiOjE3MTg5NjEyMDQsImV4cCI6MTcxOTU2NjAwNH0.sh7dOpyCyL3J-kRi1yCch7czzm0LCdb2PbRlGEY_3YQ';
+      const token = this.extractTokenFromCookie(request);
   
       if (!token) {
         throw new UnauthorizedException();

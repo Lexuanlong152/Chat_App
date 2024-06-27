@@ -25,7 +25,6 @@ export class AuthService {
           throw new UnauthorizedException('Refresh token not found');
         }
         let payload;
-    
         try {
           payload = this.jwtService.verify(refreshToken, {
             secret: this.configService.get<string>('REFRESH_TOKEN_SECRET'),

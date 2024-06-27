@@ -13,6 +13,7 @@ import { RedisPubSub } from 'graphql-redis-subscriptions';
 import { ChatroomResolver } from './chatroom/chatroom.resolver';
 import { ChatroomModule } from './chatroom/chatroom.module';
 import { JwtService } from '@nestjs/jwt';
+import { LiveChatroomModule } from 'live-chatroom/live-chatroom.module';
 const pubSub = new RedisPubSub({
   connection: {
     host: process.env.REDIS_HOST || 'localhost',
@@ -47,14 +48,12 @@ const pubSub = new RedisPubSub({
             'subscriptions-transport-ws': true,
           },
           onConnect: (connectionParams) => {
-            console.log('hi')
             const token = tokenService.extractToken(connectionParams);
 
             if (!token) {
               throw new Error('Token not provided');
             }
             const user = tokenService.validateToken(token);
-            console.log('User:', user)
             if (!user) {
               throw new Error('Invalid token');
             }
@@ -76,6 +75,7 @@ const pubSub = new RedisPubSub({
         isGlobal: true,
       }),
       ChatroomModule,
+      LiveChatroomModule,
   ],
   controllers: [AppController],
   providers: [AppService, ChatroomResolver, JwtService],
